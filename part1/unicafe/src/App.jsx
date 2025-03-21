@@ -8,8 +8,17 @@ const Button = (props) => (
   </button>
 )
 
-const Statistics = (props) => (
-  <>
+//Already had Statitics component
+const Statistics = (props) => {
+  if (props.good + props.bad + props.neutral === 0) {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  }
+  return (
+      <>
     <p>good {props.good}</p>
     <p>neutral {props.neutral}</p>
     <p>bad {props.bad}</p>
@@ -17,8 +26,9 @@ const Statistics = (props) => (
     <p>average {(props.good + props.bad + props.neutral)/3}</p>
     <p>positive {props.good / (props.good + props.bad + props.neutral)} %</p>
   </>
+  )
+}
 
-)
 
 const App = () => {
   // guarda los clics de cada botón en su propio estado
