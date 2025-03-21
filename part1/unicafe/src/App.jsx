@@ -29,6 +29,9 @@ const Statistics = (props) => {
   )
 }
 
+const StatisticLine = (props) => (
+  <p>{props.text} {props.value}</p>
+)
 
 const App = () => {
   // guarda los clics de cada botón en su propio estado
@@ -47,8 +50,13 @@ const App = () => {
       <Button handleClick={handleNeutralClick} text="Neutral" />
       <Button handleClick={handleBadClick} text="Bad" />
       <Title text="statistics" />
-      <Statistics good={good} neutral={neutral} bad={bad}/>
-
+      {/* <Statistics good={good} neutral={neutral} bad={bad}/> */}
+      <StatisticLine text="good" value={good}/>
+      <StatisticLine text="neutral" value={neutral}/>
+      <StatisticLine text="bad" value={bad}/>
+      <StatisticLine text="all" value={good + neutral + bad}/>
+      <StatisticLine text="average" value={good + bad*-1}/>
+      <StatisticLine text="positive" value={good === 0 ? 0:good/(good + neutral + bad)*100}/>
     </div>
   )
 }
