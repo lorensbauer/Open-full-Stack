@@ -33,6 +33,39 @@ const StatisticLine = (props) => (
   <p>{props.text} {props.value}</p>
 )
 
+const StatisticTable = (props) => (
+  <table>
+    <tbody>
+    <tr>
+      <td>Good</td>
+      <td>{props.good}</td>
+    </tr>
+    <tr>
+      <td>Neutral</td>
+      <td>{props.neutral}</td>
+    </tr>
+    <tr>
+      <td>Bad</td>
+      <td>{props.bad}</td>
+    </tr>
+    <tr>
+      <td>All</td>
+      <td>{props.good + props.bad + props.neutral}</td>
+    </tr>
+    <tr>
+      <td>Average</td>
+      <td>{(props.good + props.bad + props.neutral)/3}</td>
+    </tr>
+    <tr>
+      <td>Positive</td>
+      <td>{(props.good + props.bad*-1) === 0 ? 0:(props.good + props.bad*-1)/(props.good+props.bad)}</td>
+    </tr>
+
+    </tbody>
+    
+  </table>
+)
+
 const App = () => {
   // guarda los clics de cada botón en su propio estado
   const [good, setGood] = useState(0)
@@ -51,12 +84,13 @@ const App = () => {
       <Button handleClick={handleBadClick} text="Bad" />
       <Title text="statistics" />
       {/* <Statistics good={good} neutral={neutral} bad={bad}/> */}
-      <StatisticLine text="good" value={good}/>
+      {/* <StatisticLine text="good" value={good}/>
       <StatisticLine text="neutral" value={neutral}/>
       <StatisticLine text="bad" value={bad}/>
       <StatisticLine text="all" value={good + neutral + bad}/>
       <StatisticLine text="average" value={good + bad*-1}/>
-      <StatisticLine text="positive" value={good === 0 ? 0:good/(good + neutral + bad)*100}/>
+      <StatisticLine text="positive" value={good === 0 ? 0:good/(good + neutral + bad)*100}/> */}
+      <StatisticTable good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
