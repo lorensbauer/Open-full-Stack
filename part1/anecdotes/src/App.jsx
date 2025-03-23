@@ -1,6 +1,15 @@
 import { useState } from 'react'
 
-
+const Ganador = (props) => {
+  const index = props.votes.indexOf(Math.max(...props.votes))
+  console.log(props.votes)
+  console.log(index)
+  return (
+    <>
+    <p>{props.anecdotes[index]} has {props.votes[index]} votes</p>
+    </>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -34,10 +43,9 @@ const App = () => {
     setVotes(copy)
   }
 
-  // const mostVotedIndex = () => {
-  //   const index = votes.reduce((maxIndex, currentValue, currentIndex, array) => currentValue > array[maxIndex] ? currentIndex : maxIndex, 0))
+  
     
-  // }
+  
 
   return (
     <div>
@@ -48,7 +56,7 @@ const App = () => {
       <button onClick={handleVoteClick}>Vote</button>
       <button onClick={handleNextClick}>Next anecdote</button>
       <h1>Anecdote with most votes</h1>
-      <Ganador anecdotes={anecdotes} votes={votes}/>
+      <Ganador anecdotes={anecdotes} votes={votes} />
     </div>
   )
 }
