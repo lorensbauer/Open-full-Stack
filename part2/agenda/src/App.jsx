@@ -46,6 +46,18 @@ const App = () => {
 
   }
 
+  const deletePerson = (person) => {
+    if (window.confirm(`Quieres borrar a ${person.name}?`)) {
+      console.log(person)
+      personService
+        .del(person.id)
+        .then(returnedData => {
+          console.log(`Borrado: ${returnedData.name} con id: ${returnedData.id}`)
+          setPersons(persons.filter(p => p.id !== person.id))
+        })
+    }
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
 
@@ -62,6 +74,7 @@ const App = () => {
   const personsToShow = persons.filter(person => person.name.toLowerCase().includes(newFilter.toLocaleLowerCase()))
 
 
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -69,7 +82,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} addPerson={addPerson} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} deletePerson={deletePerson} />
     </div>
   )
 }
