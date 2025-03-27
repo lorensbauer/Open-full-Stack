@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -13,14 +13,12 @@ const App = () => {
 
   useEffect(() => {
     console.log('efect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-
-  },[])
+  }, [])
   console.log('render', persons.length, 'persons')
 
   const addPerson = (event) => {
@@ -33,14 +31,14 @@ const App = () => {
     console.log(personObject.name);
 
     if (!persons.map(person => person.name).includes(personObject.name)) {
-      axios
-        .post('http://localhost:3001/persons', personObject)
-        .then(response => {
-          setPersons(persons.concat(personObject))
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
         })
-      
+
     }
     else {
       alert(`${personObject.name} is already added to phonebook`)
@@ -49,18 +47,15 @@ const App = () => {
   }
 
   const handleNameChange = (event) => {
-    //console.log(event.target.value);
     setNewName(event.target.value)
 
   }
 
   const handleNumberChange = (event) => {
-    // console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
   const handleFilterChange = (event) => {
-    //console.log(event.target.value)
     setNewFilter(event.target.value)
   }
 
@@ -74,7 +69,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} addPerson={addPerson} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow}/> 
+      <Persons personsToShow={personsToShow} />
     </div>
   )
 }
