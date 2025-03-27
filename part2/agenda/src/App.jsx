@@ -4,12 +4,15 @@ import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [successMessage, setSuccesMessage] = useState(null)
 
   useEffect(() => {
     console.log('efect')
@@ -37,6 +40,12 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setSuccesMessage(
+            `${personObject.name} succesfully added`
+          )
+          setTimeout(() => {
+            setSuccesMessage(null)
+          }, 5000);
         })
 
     }
@@ -51,6 +60,12 @@ const App = () => {
             setPersons(persons.map(p => p.id !== personOld.id ? p : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setSuccesMessage(
+              `${returnedPerson.name} succesfully updated`
+            )
+            setTimeout(() => {
+              setSuccesMessage(null)
+            }, 5000);
           })
 
       }
@@ -90,6 +105,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={successMessage}/>
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} addPerson={addPerson} />
