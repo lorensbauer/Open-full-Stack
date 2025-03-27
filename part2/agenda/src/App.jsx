@@ -7,22 +7,24 @@ import Persons from './components/Persons'
 import Notification from './components/Notification'
 import './index.css'
 
+
+let messageType = "success"
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [successMessage, setSuccesMessage] = useState(null)
+  const [newMessage, setNewMessage] = useState(null)
+
+
 
   useEffect(() => {
-    console.log('efect')
     personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -30,8 +32,6 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    console.log(persons)
-    console.log(personObject.name);
 
     if (!persons.map(person => person.name).includes(personObject.name)) {
       personService
@@ -40,11 +40,11 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
-          setSuccesMessage(
+          setNewMessage(
             `${personObject.name} succesfully added`
           )
           setTimeout(() => {
-            setSuccesMessage(null)
+            setNewMessage(null)
           }, 5000);
         })
 
@@ -60,13 +60,24 @@ const App = () => {
             setPersons(persons.map(p => p.id !== personOld.id ? p : returnedPerson))
             setNewName('')
             setNewNumber('')
-            setSuccesMessage(
+            setNewMessage(
               `${returnedPerson.name} succesfully updated`
             )
             setTimeout(() => {
-              setSuccesMessage(null)
+              setNewMessage(null)
             }, 5000);
-          })
+          }).catch(error => {
+            setNewMessage(`Information of ${personOld.name} has already been removed from server`)
+            messageType = "error"
+            setNewName('')
+            setNewNumber('')
+            setPersons(persons.filter(p => p.id !== personOld.id))
+            setTimeout(() => {
+              setNewMessage(null)
+            }, 5000);
+          }
+
+          )
 
       }
     }
@@ -75,13 +86,23 @@ const App = () => {
 
   const deletePerson = (person) => {
     if (window.confirm(`Quieres borrar a ${person.name}?`)) {
-      console.log(person)
       personService
         .del(person.id)
         .then(returnedData => {
           console.log(`Borrado: ${returnedData.name} con id: ${returnedData.id}`)
           setPersons(persons.filter(p => p.id !== person.id))
-        })
+        }).catch(
+          error => {
+            setNewMessage(`Information of ${person.name} has already been removed from server`)
+            messageType = "error"
+            setNewName('')
+            setNewNumber('')
+            setPersons(persons.filter(p => p.id !== person.id))
+            setTimeout(() => {
+              setNewMessage(null)
+            }, 5000)
+          }
+        )
     }
   }
 
@@ -106,7 +127,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification message={successMessage}/>
+      <Notification className={messageType} message={newMessage} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} addPerson={addPerson} />
