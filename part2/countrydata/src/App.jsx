@@ -23,14 +23,19 @@ const Country = ({ countries }) => {
   }
   else if (countries.length === 1) {
     const country = countries[0]
-    
+    console.log(typeof (country.languages))
     return (
       <div>
         <h1>{country.name.common}</h1>
         Capital {country.capital}<br />Area {country.area}
         <h2>Languages</h2>
-        <ul></ul>
-
+        <ul>
+          {Object.entries(country.languages).map(l =>
+            <li key={l[0]}>
+              {l[1]}
+            </li>)}
+        </ul>
+        <img src={country.flags.png} alt={country.flags.alt} />
       </div>
     )
 
