@@ -1,46 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const Country = ({ countries }) => {
-  if (countries.length > 10) {
-    return (
-      <div>
-        Too many matches, specify another filter
-      </div>
-    )
-  }
-  else if (countries.length > 1) {
-    return (
-      <div>
-        {countries.map(c =>
-          <div key={c.name.official}>
-            {c.name.common}
-          </div>
-        )}
-      </div>
-    )
-
-  }
-  else if (countries.length === 1) {
-    const country = countries[0]
-    console.log(typeof (country.languages))
-    return (
-      <div>
-        <h1>{country.name.common}</h1>
-        Capital {country.capital}<br />Area {country.area}
-        <h2>Languages</h2>
-        <ul>
-          {Object.entries(country.languages).map(l =>
-            <li key={l[0]}>
-              {l[1]}
-            </li>)}
-        </ul>
-        <img src={country.flags.png} alt={country.flags.alt} />
-      </div>
-    )
-
-  }
-}
+import Country from './components/Country'
 
 function App() {
   const [countries, setCountries] = useState([])
@@ -59,18 +20,19 @@ function App() {
       })
   }
 
-  const onSearch = (event) => {
-    event.preventDefault()
-    setCountryToSearch(value)
-  }
+  // const onSearch = (event) => {
+  //   event.preventDefault()
+
+  //   setCountryToSearch(value)
+  // }
 
   return (
     <>
       <div>
-        <form onSubmit={onSearch}>
-          Country: <input value={value} onChange={handleChange} />
-        </form>
-        <Country countries={countries} />
+        {/* <form onSubmit={onSearch}> */}
+        Country: <input value={value} onChange={handleChange} />
+        {/* </form> */}
+        <Country countries={countries} value={value} />
 
       </div>
     </>
