@@ -30,12 +30,15 @@ const Country = ({ countries, value }) => {
     }, [countries])
 
     const handleClick = (event) => {
-
-        const selectedCountry = countries.filter(c => c.name.common === event.target.id)
-        setShowingCountry(selectedCountry[0])
-        
-        
-
+        if (event.target.innerText === "Show"){
+            const selectedCountry = countries.filter(c => c.name.common === event.target.id)
+            setShowingCountry(selectedCountry[0])
+            event.target.innerText = "Hide"
+        }
+        else{
+            setShowingCountry(null)
+            event.target.innerText = "Show"
+        }
     }
 
     if (!countries) {
