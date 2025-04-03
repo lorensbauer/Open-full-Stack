@@ -1,7 +1,23 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 const OneCountryTemplate = ({ country }) => {
 
+    const [countryWeather, setCountryWeather] = useState(null)
+
+    const [lat, lng] = country.latlng
+
+
+    useEffect(() => {
+
+        axios
+            .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${import.meta.env.VITE_SOME_KEY}&units=metric`)
+            .then(response => {
+                setCountryWeather(response.data)
+                
+    })
+
+    }, [])
 
     if (!country)
         return
@@ -17,6 +33,21 @@ const OneCountryTemplate = ({ country }) => {
                     </li>)}
             </ul>
             <img src={country.flags.png} alt={country.flags.alt} />
+            <h2>Weather in Helsinki</h2>
+            {countryWeather ? (
+                <>
+                    Temperature {countryWeather.main.temp} Celsius <br />
+                    <img src={`https://openweathermap.org/img/wn/${countryWeather.weather[0].icon}@2x.png`} alt={countryWeather.weather[0].description} /><br />
+                    Wind {countryWeather.wind.speed} m/s
+                </>
+            ) : (
+                <>
+                    Loading Weather data...
+                </>
+            )
+
+            }
+
         </div>
     )
 
@@ -30,12 +61,12 @@ const Country = ({ countries, value }) => {
     }, [countries])
 
     const handleClick = (event) => {
-        if (event.target.innerText === "Show"){
+        if (event.target.innerText === "Show") {
             const selectedCountry = countries.filter(c => c.name.common === event.target.id)
             setShowingCountry(selectedCountry[0])
             event.target.innerText = "Hide"
         }
-        else{
+        else {
             setShowingCountry(null)
             event.target.innerText = "Show"
         }
