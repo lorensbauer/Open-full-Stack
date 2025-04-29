@@ -22,6 +22,7 @@ const App = () => {
     personService
       .getAll()
       .then(initialPersons => {
+        console.log(initialPersons)
         setPersons(initialPersons)
       })
   }, [])
@@ -32,11 +33,13 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-
+    console.log(personObject)
     if (!persons.map(person => person.name).includes(personObject.name)) {
+      console.log("Entra aqui")
       personService
         .create(personObject)
         .then(returnedPerson => {
+          console.log(returnedPerson)
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
