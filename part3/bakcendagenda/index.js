@@ -2,8 +2,12 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 
+morgan.token("body", (request) => {
+    return request.method === "POST" ? JSON.stringify(request.body) : " ";
+  });
+
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
     { 
@@ -62,7 +66,6 @@ const getRandomInt = (max) => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log(body)
     if (!body.name || !body.number){
         return response.status(400).json({
             error: 'name or number missing'
@@ -84,6 +87,7 @@ app.post('/api/persons', (request, response) => {
 
     response.json(person)
 })
+
 
 const PORT = 3001
 app.listen(PORT)
