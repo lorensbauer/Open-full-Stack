@@ -7,12 +7,8 @@ const getAll = () => {
 }
 
 const create = newObject => {
-    console.log("Entra en create", newObject)
     const request = axios.post(baseUrl, newObject)
-    return request.then(response => {
-        console.log("fadfaf")    
-        response.data
-    })
+    return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {

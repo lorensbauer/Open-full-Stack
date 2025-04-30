@@ -57,9 +57,12 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
+    const person = persons.find(person => person.id === id)
     persons = persons.filter(person => person.id !== id)
 
     response.status(204).end()
+
+    
 })
 
 const getRandomInt = (max) => {
@@ -69,7 +72,7 @@ const getRandomInt = (max) => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log(body.request)
+    console.log(body)
     if (!body.name || !body.number){
         return response.status(400).json({
             error: 'name or number missing'
@@ -88,7 +91,7 @@ app.post('/api/persons', (request, response) => {
     }
 
     persons = persons.concat(person)
-
+    console.log(person)
     response.json(person)
 })
 

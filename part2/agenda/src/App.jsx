@@ -22,7 +22,6 @@ const App = () => {
     personService
       .getAll()
       .then(initialPersons => {
-        console.log(initialPersons)
         setPersons(initialPersons)
       })
   }, [])
@@ -33,9 +32,9 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    console.log(personObject)
+    
     if (!persons.map(person => person.name).includes(personObject.name)) {
-      console.log("Entra aqui")
+      
       personService
         .create(personObject)
         .then(returnedPerson => {
@@ -44,7 +43,7 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setNewMessage(
-            `${personObject.name} succesfully added`
+            `${returnedPerson.name} succesfully added`
           )
           setTimeout(() => {
             setNewMessage(null)
@@ -92,7 +91,8 @@ const App = () => {
       personService
         .del(person.id)
         .then(returnedData => {
-          console.log(`Borrado: ${returnedData.name} con id: ${returnedData.id}`)
+          console.log(returnedData)
+          console.log(`Borrado: ${person.name} con id: ${person.id}`)
           setPersons(persons.filter(p => p.id !== person.id))
         }).catch(
           error => {
